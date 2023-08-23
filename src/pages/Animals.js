@@ -17,14 +17,14 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 import { DataGrid } from '@mui/x-data-grid';
-import { collection, doc, deleteDoc,where, onSnapshot, getDoc, getDocs, query } from 'firebase/firestore';
+import { collection, doc, deleteDoc, where, onSnapshot, getDoc, getDocs, query } from 'firebase/firestore';
 import { db } from '../firebase';
 
 
 // components
 import Iconify from '../components/iconify';
 import NuevoAnimals from '../components/forms/students/nuevo-animals';
-import UserNewForm from '../components/forms/students/UserNewForm';
+
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ const style = {
   p: 4,
   m: 3,
   overflow: 'scroll',
-};const alimentosRecomendados = [];
+}; const alimentosRecomendados = [];
 
 export default function Drivers() {
   const [open1, setOpen1] = useState(false);
@@ -54,83 +54,83 @@ export default function Drivers() {
   FUNCION PARA LEER DATOS
  =========================================== */
 
- // const [driver, setDriver] = useState([]);
+  // const [driver, setDriver] = useState([]);
   // Obten los datos del animal y los componentes nutricionales necesarios
-const animalData = {
-  nombre: 'Leon',
-  componentesNecesarios: ['proteina', 'Vitamina B6' ]
-};
+  const animalData = {
+    nombre: 'Leon',
+    componentesNecesarios: ['proteina', 'Vitamina B6']
+  };
 
-// Crea una referencia a la colección "comida"
+  // Crea una referencia a la colección "comida"
 
-const comidaRef = collection(db, 'food');
+  const comidaRef = collection(db, 'food');
 
 
 
-for (let i = 0; i < animalData.componentesNecesarios.length; i++) {
+  for (let i = 0; i < animalData.componentesNecesarios.length; i++) {
+
+    const q = query(comidaRef, where('components.' + animalData.componentesNecesarios[i], '>=', 0));
+
+    getDocs(q)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const alimento = doc.data();
+
+          alimentosRecomendados.push(alimento.food_name);
+        });
+
+
+      })
+      .catch((error) => {
+        console.error('Error al realizar la consulta:', error);
+      });
+  }
+  if (alimentosRecomendados.length > 0) {
+    console.log(`Alimentos recomendados para ${animalData.food_name} :`, alimentosRecomendados);
+  } else {
+    console.log(`No se encontraron alimentos recomendados para ${animalData.food_name}`);
+  }
+
+  // Construye la consulta
+  /*const q = query(comidaRef, where('components.' + animalData.componentesNecesarios[i], '>=', 0)
+  // Agrega más condiciones where según sea necesario
+  );
   
-  const q = query(comidaRef, where('components.' + animalData.componentesNecesarios[i], '>=', 0));
   
+  // Realiza la consulta y obtén los resultados
   getDocs(q)
     .then((querySnapshot) => {
+      console.log("Alimentos recomendados para query " ,querySnapshot );
+      const alimentosRecomendados = [];
       querySnapshot.forEach((doc) => {
         const alimento = doc.data();
-      
         alimentosRecomendados.push(alimento.food_name);
       });
-      
-     
+      console.log(`Alimentos recomendados para ${animalData.nombre}:`, alimentosRecomendados);
     })
     .catch((error) => {
       console.error('Error al realizar la consulta:', error);
-    });
-}
-if (alimentosRecomendados.length > 0) {
-  console.log(`Alimentos recomendados para ${animalData.food_name} :`, alimentosRecomendados);
-} else {
-  console.log(`No se encontraron alimentos recomendados para ${animalData.food_name}`);
-}
+    });*/
 
-// Construye la consulta
-/*const q = query(comidaRef, where('components.' + animalData.componentesNecesarios[i], '>=', 0)
-// Agrega más condiciones where según sea necesario
-);
-
-
-// Realiza la consulta y obtén los resultados
-getDocs(q)
-  .then((querySnapshot) => {
-    console.log("Alimentos recomendados para query " ,querySnapshot );
-    const alimentosRecomendados = [];
-    querySnapshot.forEach((doc) => {
-      const alimento = doc.data();
-      alimentosRecomendados.push(alimento.food_name);
-    });
-    console.log(`Alimentos recomendados para ${animalData.nombre}:`, alimentosRecomendados);
-  })
-  .catch((error) => {
-    console.error('Error al realizar la consulta:', error);
-  });*/
-
-// =============================================================
+  // =============================================================
   const [data1, setData] = useState([]);
   useEffect(() => {
-    
+
     const unsub = onSnapshot(
       collection(db, 'animals'),
       (snapShot) => {
         const list = [];
 
         snapShot.docs.forEach(async (doc1) => {
-         /* const autorDoc = await getDoc(doc(db, "conductor",doc1.data().stud_bus.id));
-    const autorData = autorDoc.data();
-          
-          console.log(autorData); */
-          list.push({ id: doc1.id, ...doc1.data()});
-        }); 
+          /* const autorDoc = await getDoc(doc(db, "conductor",doc1.data().stud_bus.id));
+     const autorData = autorDoc.data();
+           
+           console.log(autorData); */
+          list.push({ id: doc1.id, ...doc1.data() });
+        });
         console.log(list);
         setData(list);
-        
+
       },
       (error) => {
         console.log(error);
@@ -145,38 +145,40 @@ getDocs(q)
 
 
   const columns = [
-  
-    { field: 'fullName', headerName: 'Nombre', width: 300, 
-      
-    renderCell: (params) => {
-      return (
-        <Stack direction="row" alignItems="center" spacing={2}>
-        <Avatar alt={params.row.anim_name} src="asd" />
-        <Typography variant="subtitle2" noWrap>
-        {params.row.anim_nickname} {params.row.anim_name}
-        <br />
-        {params.row.anim_species}
-      </Typography>
-      </Stack>
-        
-      );
+
+    {
+      field: 'fullName', headerName: 'Nombre', width: 300,
+
+      renderCell: (params) => {
+        return (
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <Avatar alt={params.row.anim_name} src="asd" />
+            <Typography variant="subtitle2" noWrap>
+              {params.row.anim_nickname} {params.row.anim_name}
+              <br />
+              {params.row.anim_species}
+            </Typography>
+          </Stack>
+
+        );
+      },
+
     },
- 
-    },
-    { field: 'Ruta', headerName: 'Genero', width: 200, 
-      
-    renderCell: (params) => {           
-      return (
-        <Typography variant="subtitle2" noWrap>
-        { params.row.anim_gender}
-      </Typography>
-      );
-    },
-  
+    {
+      field: 'Ruta', headerName: 'Genero', width: 200,
+
+      renderCell: (params) => {
+        return (
+          <Typography variant="subtitle2" noWrap>
+            {params.row.anim_gender}
+          </Typography>
+        );
+      },
+
     },
     { field: 'anim_diet', headerName: 'Dieta', width: 130 },
     { field: 'anim_area', headerName: 'Area', width: 130 },
-   
+
   ];
 
   const handleDelete = async (id) => {
@@ -189,14 +191,14 @@ getDocs(q)
       confirmButtonColor: '#2065D1',
       cancelButtonColor: '#FC5C58',
       confirmButtonText: 'Eliminar'
-    }).then ((result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
         try {
-           deleteDoc(doc(db, 'estudiantes', id));
+          deleteDoc(doc(db, 'estudiantes', id));
           setData(data1.filter((item) => item.id !== id));
         } catch (err) {
           console.log(err);
-        } 
+        }
         Swal.fire(
           'Eliminado!',
           'El archivo ha sido eliminado.',
@@ -204,13 +206,13 @@ getDocs(q)
         )
       }
     });
-    
-   /* try {
-      await deleteDoc(doc(db, 'estudiantes', id));
-      setData(data1.filter((item) => item.id !== id));
-    } catch (err) {
-      console.log(err);
-    } */
+
+    /* try {
+       await deleteDoc(doc(db, 'estudiantes', id));
+       setData(data1.filter((item) => item.id !== id));
+     } catch (err) {
+       console.log(err);
+     } */
   };
 
   const actionColumn = [
@@ -219,20 +221,20 @@ getDocs(q)
       headerName: 'Action',
       width: 200,
       renderCell: (params) => (
-        
-         <>
-            <Button onClick={handleOpen2}  href={`/animal-add?id=${params.row.id}`}>
-              
-              <Iconify icon="solar:map-arrow-square-bold" />
 
-            </Button>
+        <>
+          <Button onClick={handleOpen2} href={`/animal-add?id=${params.row.id}`}>
 
-            <Button onClick={() => handleDelete(params.row.id)} sx={{ color: 'error.main' }}>
-              <Iconify icon={'eva:trash-2-outline'} />
-            </Button>
-            </>
-        ),
-     
+            <Iconify icon="solar:map-arrow-square-bold" />
+
+          </Button>
+
+          <Button onClick={() => handleDelete(params.row.id)} sx={{ color: 'error.main' }}>
+            <Iconify icon={'eva:trash-2-outline'} />
+          </Button>
+        </>
+      ),
+
     },
   ];
   return (
@@ -251,14 +253,14 @@ getDocs(q)
           </Typography>
         </Box>
       </Modal>
-     {/* =========================================
+      {/* =========================================
           MODAL PARA AGREGAR DATOS
          =========================================== */}
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-          Animales
+            Animales
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpen}>
             Agregar
@@ -270,9 +272,9 @@ getDocs(q)
               rows={data1}
               columns={columns.concat(actionColumn)}
               initialState={{
-              
+
                 pagination: {
-                 
+
                   paginationModel: {
                     pageSize: 5,
                     /* page: 0 // default value will be used if not passed */

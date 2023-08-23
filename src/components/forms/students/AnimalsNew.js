@@ -6,7 +6,7 @@ import { useSnackbar } from 'notistack';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { collection, doc, deleteDoc, where, onSnapshot, updateDoc, getDoc, getDocs, query } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, where, onSnapshot, updateDoc, getDoc, Timestamp, getDocs, query } from 'firebase/firestore';
 import { db, storage } from '../../../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -101,7 +101,7 @@ export default function AnimalsNew({ isEdit, arrayAnimals1 }) {
       altura: arrayAnimals?.anim_height || '',
       anim_img: arrayAnimals?.anim_img || '',
       condicion: arrayAnimals?.anim_health_condition || '',
-      nivelpeligro: arrayAnimals?.danger_level,
+      nivelpeligro: arrayAnimals?.danger_level || '',
       peso: arrayAnimals?.anim_weight || '',
       nacimiento: arrayAnimals?.anim_born.seconds || '',
       estado: arrayAnimals?.estado || '',
@@ -122,14 +122,14 @@ export default function AnimalsNew({ isEdit, arrayAnimals1 }) {
           anim_age: values.edad,
           anim_area: values.area,
           //anim_arrive_date: values.,
-          anim_born: nuevoNacimiento,
+          anim_born: selectedDate,
           anim_diet: values.dieta,
           anim_health_condition: values.condicion,
           anim_height: values.altura,
           anim_weight: values.peso,
           anim_img: values.anim_img,
-          danger_level: values.nivelpeligro
-
+          danger_level: values.nivelpeligro,
+          created: Timestamp.now(),
 
         };
 
@@ -175,10 +175,9 @@ export default function AnimalsNew({ isEdit, arrayAnimals1 }) {
     [setFieldValue]
   );
   const handleDateChange = (date) => {
-    const formattedDate = date.getTime();;
-    console.log(formattedDate);
-    setSelectedDate(formattedDate);
-    setFechaLlegada(formattedDate);
+
+    setSelectedDate(date);
+
   };
 
   return (
@@ -306,31 +305,26 @@ export default function AnimalsNew({ isEdit, arrayAnimals1 }) {
                       {...getFieldProps('altura')}
 
                     />
+
                   </Stack>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        label="Nacimiento"
-
                         selected={selectedDate}
                         onChange={handleDateChange}
                         dateFormat="dd/MM/yyyy"
-                        value={dayjs(selectedDate1)}
-                        defaultValue={dayjs('2022-04-17')}
-
-
+                        isClearable
+                        {...getFieldProps('date')}
 
                       />
                     </LocalizationProvider>
                     <TextField label="Peso(kg)"
                       {...getFieldProps('peso')}
                     />
-                    <TextField
-
-                      label="Nivel de peligro"
+                    <TextField label="nivel de peligro"
                       {...getFieldProps('nivelpeligro')}
-
                     />
+
                   </Stack>
 
 
