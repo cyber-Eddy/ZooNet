@@ -7,9 +7,6 @@ import { Form, FormikProvider, useFormik } from "formik";
 // material
 import { render } from "react-dom";
 
-import Map from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
 // material
 

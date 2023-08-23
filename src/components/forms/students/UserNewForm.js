@@ -9,10 +9,6 @@ import { Form, FormikProvider, useFormik } from "formik";
 // material
 import { render } from "react-dom";
 
-import Map from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-
 import LoadingButton from "@mui/lab/LoadingButton";
 import {
   Box,
@@ -29,7 +25,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 // utils
-import GoogleMapReact from "google-map-react";
+
 import { Icon } from "@iconify/react";
 import { fData } from "../../../utils/formatNumber";
 import fakeRequest from "../../../utils/fakeRequest";
@@ -46,48 +42,9 @@ UserNewForm.propTypes = {
   isEdit: PropTypes.bool,
   currentUser: PropTypes.object,
 };
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoidGF0aWVsdW5payIsImEiOiJjbGdjcnZ0ZmEwMzJnM2RvYmlwZHphMm8zIn0.g0SuMHsquPViepqtokvM5g";
-const queryParams = {
-  country: "do",
-  types: "address",
-};
+
 export default function UserNewForm({ isEdit, currentUser }) {
-  const [draggable, setDraggable] = useState(true);
-  const [markerPosition, setMarkerPosition] = useState({
-    lat: 19.4517,
-    lng: -70.69703,
-  });
-
-  const handleMarkerDrag = (event) => {
-    setMarkerPosition({
-      lat: event.lat,
-      lng: event.lng,
-    });
-  };
-  const [address, setAddress] = useState("");
-
-  /* =================================================
-  UBICACION ATRAVES DE LA LOCATION Y LATITUDE
-  ====================================================== */
-
-  useEffect(() => {
-    const getReverseGeocode = async () => {
-      const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${markerPosition.lng},${markerPosition.lat}.json?access_token=${MAPBOX_TOKEN}&types=address`
-      );
-      const data = await response.json();
-      setAddress(data.features[0].place_name);
-    };
-    getReverseGeocode();
-  }, []); 
-
-  const [open, setOpen] = useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
+ 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;

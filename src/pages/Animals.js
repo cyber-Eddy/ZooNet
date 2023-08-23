@@ -221,8 +221,8 @@ getDocs(q)
       renderCell: (params) => (
         
          <>
-            <Button onClick={handleOpen2}  href={`/driver-routes?id=${params.row.id}`}>
-           
+            <Button onClick={handleOpen2}  href={`/animal-add?id=${params.row.id}`}>
+              
               <Iconify icon="solar:map-arrow-square-bold" />
 
             </Button>

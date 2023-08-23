@@ -106,11 +106,11 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-              {data[0]?.user_name}{" "}{data[0]?.user_last}
+              {/*data[0]?.user_name}{" "}{data[0]?.user_last*/}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {data[0]?.user_rol}
+              
               </Typography>
             </Box>
           </StyledAccount>

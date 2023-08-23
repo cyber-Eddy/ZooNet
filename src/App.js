@@ -24,6 +24,7 @@ import Publicaciones from "./pages/tablanueva";
 import Subscription from "./pages/Subscription";
 import Animals from "./pages/Animals";
 import AddDrivers from "./pages/AddDrivers";
+import AnimalsAdd from "./components/forms/students/AnimalsAdd";
 
 // import Subscription from "./pages/Subscription";
 // ----------------------------------------------------------------------
@@ -38,7 +39,6 @@ export default function App() {
           <AuthContextProvider>
             <Routes>
               <Route path="/login" element={<LoginPage />} />
-
               <Route
                 path="/"
                 element={
@@ -57,6 +57,7 @@ export default function App() {
               <Route path="/account" element={ <UserAccount />} />
               <Route path="/animals" element={ <Animals />} />
               <Route path="/driver-routes" element={ <AddDrivers /> } />
+              <Route path="/animal-add" element={ < AnimalsAdd />} />
              {/* <Route path="/" element={ <DashboardAppPage />} />
                 <Route path="/dashboard" element={ <DashboardAppPage />}
                 <Route path="/students" element={ <Students />} />
