@@ -374,15 +374,16 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
 
   function calcularCantidadAlimento(alimento, animal, objetivo) {
     let cantidad = 0;
-    console.log(animal);
-    const pesoKg = Number(animal.anim_weight) / 1000; // Convertir gramos a kilogramos
+
+    const pesoKg = Number(animal.anim_weight); // Convertir gramos a kilogramos
     const edadSemanas = animal.anim_age * 52; // Convertir años a semanas
     const alturaMetros = Number(animal.anim_height);
 
     const factorGenero = animal.anim_gender === "Male" ? 1.15 : 1; // Factor de género para machos y hembras
     const factorEstado = obtenerFactorEstado(animal.estado, objetivo); // Obtener el factor según el estado del animal y el objetivo
 
-    cantidad = alimento.nutritional_data.proteina * 2 * pesoKg * edadSemanas * alturaMetros * factorGenero * factorEstado;
+    //cantidad = alimento.nutritional_data.proteina * 2 * pesoKg * edadSemanas * alturaMetros * factorGenero * factorEstado;
+    cantidad = (alimento.nutritional_data.proteina * 2 * pesoKg / 170 * edadSemanas * alturaMetros * factorGenero * factorEstado) / 1000; //
     const cantidadFormateada = parseFloat(cantidad).toFixed(2);
     return cantidadFormateada;
   }
@@ -396,13 +397,13 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
       }
     } else if (estado === "amamantando") {
       if (objetivo === "aumentar") {
-        return 1.5; // Porcentaje de aumento específico para lactancia
+        return 1.2; // Porcentaje de aumento específico para lactancia
       } else if (objetivo === "disminuir") {
-        return 0.7; // Porcentaje de reducción específico para lactancia
+        return 0.8; // Porcentaje de reducción específico para lactancia
       }
     } else {
       if (objetivo === "aumentar") {
-        return 1.1; // Porcentaje de aumento específico para hembras normales
+        return 1.2; // Porcentaje de aumento específico para hembras normales
       } else if (objetivo === "disminuir") {
         return 0.9; // Porcentaje de reducción específico para hembras normales
       }
@@ -427,15 +428,29 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
   =====================================================================
   =====================================================================
    =====================================================================*/
+  const [objetivoSeleccionado, setObjetivoSeleccionado] = useState('');
+
+  const handleChangeObjetivo = (event) => {
+    setObjetivoSeleccionado(event.target.value);
+  };
   const miFuncion = () => {
+    console.log('Objetivo seleccionado:', objetivoSeleccionado);
     console.log('¡Botón clickeado!');
     const objetivoEjemplo = "mantener"; // Cambiar el objetivo según sea necesario ("aumentar", "disminuir", "mantener")
-    const dietaGenerada = generarDietaSemanal(arrayAnimals, objetivoEjemplo);
+    const dietaGenerada = generarDietaSemanal(arrayAnimals, objetivoSeleccionado);
 
     //Mostrar la dieta generada con una mejor visualización y cantidades en kilogramos
     const dietaFormateadaKg = JSON.stringify(dietaGenerada, null, 2);
     setDietaFormateada(JSON.parse(dietaFormateadaKg));
-    console.log(dietaFormateadaKg);
+    // console.log(dietaFormateadaKg);
+  };
+  const obtenerIndicesAleatorios = (length) => {
+    const indicesAleatorios = new Set();
+    while (indicesAleatorios.size < 2) {
+      const indiceAleatorio = Math.floor(Math.random() * length);
+      indicesAleatorios.add(indiceAleatorio);
+    }
+    return Array.from(indicesAleatorios);
   };
 
 
@@ -613,6 +628,34 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
             </Grid>
             <Grid item xs={12} md={12}>
               <Card sx={{ p: 3 }}>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                  <Typography variant="h4" gutterBottom>
+                    Dieta recomendada semanal
+                  </Typography>
+
+                </Stack>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                  <TextField
+                    select
+                    label="Objetivo"
+                    placeholder="Objetivo"
+                    // {...getFieldProps('genero')}
+                    value={objetivoSeleccionado}
+                    onChange={handleChangeObjetivo}
+                    SelectProps={{ native: true }}
+
+                  >
+                    <option value="sadsad" />
+
+                    <option>aumentar</option>
+                    <option>disminuir</option>
+                    <option>mantener</option>
+
+                  </TextField>
+                  <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={miFuncion}>
+                    Agregar
+                  </Button>
+                </Stack>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -620,33 +663,51 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
                         <TableCell>Dia de la Semana</TableCell>
                         <TableCell align="left">Primer alimento</TableCell>
                         <TableCell align="left">Segundo alimento</TableCell>
-                        <TableCell align="left">Tercer alimento</TableCell>
-                        <TableCell align="left">Cuarto alimento</TableCell>
-                        <TableCell align="left">Qinto alimento</TableCell>
-                        <TableCell align="left">Sexto alimento</TableCell>
+
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {console.log("aqui", dietaFormateada)}
                       {!dietaFormateada ? (
-                        <p>La dieta está vacía</p>
+                        <TableRow>
+                          <TableCell component="th" >
+                            <img class="MuiBox-root css-1ckry8b" alt="empty content" src="https://minimals.cc/assets/icons/empty/ic_content.svg" />
+                            <span class="MuiTypography-root MuiTypography-h6 css-149g82e">No Data</span>
+                          </TableCell>
+
+                        </TableRow>
+
+
+
                       ) : (
-                        dietaFormateada.map((row) => (
-                          <TableRow
-                            key={row.dia}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                          >
-                            <TableCell component="th" scope="row">
-                              {row.dia}
-                            </TableCell>
-                            <TableCell align="left">{row.alimentos[0].food_name}<br />cantidad:&nbsp;{row.alimentos[0].cantidad}</TableCell>
-                            <TableCell align="left">{row.alimentos[1].food_name}<br />cantidad:&nbsp;{row.alimentos[1].cantidad}</TableCell>
-                            <TableCell align="left">{row.alimentos[2].food_name}<br />cantidad:&nbsp;{row.alimentos[2].cantidad}</TableCell>
-                            <TableCell align="left">{row.alimentos[3].food_name}<br />cantidad:&nbsp;{row.alimentos[3].cantidad}</TableCell>
-                            <TableCell align="left">{row.alimentos[4].food_name}<br />cantidad:&nbsp;{row.alimentos[4].cantidad}</TableCell>
-                            <TableCell align="left">{row.alimentos[5].food_name}<br />cantidad:&nbsp;{row.alimentos[5].cantidad}</TableCell>
-                          </TableRow>
-                        ))
+                        dietaFormateada.map((row) => {
+                          const indicesAleatorios = obtenerIndicesAleatorios(row.alimentos.length);
+
+                          return (
+                            <TableRow
+                              key={row.dia}
+                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                              <TableCell component="th" scope="row">
+                                {row.dia}
+                              </TableCell>
+
+                              {/* Mostrar los nombres de los dos alimentos aleatorios */}
+                              {indicesAleatorios.map((indice) => (
+                                <TableCell key={indice} align="left">
+                                  {row.alimentos[indice].food_name}<br />
+                                  cantidad:&nbsp;{row.alimentos[indice].cantidad}&nbsp;kg
+                                </TableCell>
+                              ))}
+
+                              {/* Rellenar con celdas vacías si no hay suficientes elementos aleatorios */}
+                              {indicesAleatorios.length < 1 &&
+                                Array.from({ length: 2 - indicesAleatorios.length }).map((_, index) => (
+                                  <TableCell key={index} align="left"></TableCell>
+                                ))}
+                            </TableRow>
+                          );
+                        })
                       )}
                     </TableBody>
                   </Table>
