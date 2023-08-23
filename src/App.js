@@ -26,6 +26,7 @@ import Animals from "./pages/Animals";
 import AddDrivers from "./pages/AddDrivers";
 import AnimalsAdd from "./components/forms/students/AnimalsAdd";
 import FoodAdd from "./components/forms/students/FoddAdd";
+import AnimalsNew from "./components/forms/students/AnimalsNew";
 
 // import Subscription from "./pages/Subscription";
 // ----------------------------------------------------------------------
@@ -49,25 +50,26 @@ export default function App() {
                   </ProtectedRoute>
                 }
               >
-              
-              <Route path="/" element={ <DashboardAppPage />} />
-              <Route path="/dashboard" element={ <DashboardAppPage />} />
-              <Route path="/students" element={ <Students />} />
-              <Route path="/subscription" element={ <Subscription/>} />
-              <Route path="/add-students" element={ <AddStudents />}/>
-              <Route path="/account" element={ <UserAccount />} />
-              <Route path="/animals" element={ <Animals />} />
-              <Route path="/driver-routes" element={ <AddDrivers /> } />
-              <Route path="/animal-add" element={ < AnimalsAdd />} />
-              <Route path="/food-add" element={ < FoodAdd />} />
-             {/* <Route path="/" element={ <DashboardAppPage />} />
+
+                <Route path="/" element={<DashboardAppPage />} />
+                <Route path="/dashboard" element={<DashboardAppPage />} />
+                <Route path="/students" element={<Students />} />
+                <Route path="/subscription" element={<Subscription />} />
+                <Route path="/add-students" element={<AddStudents />} />
+                <Route path="/account" element={<UserAccount />} />
+                <Route path="/animals" element={<Animals />} />
+                <Route path="/driver-routes" element={<AddDrivers />} />
+                <Route path="/animal-add" element={< AnimalsAdd />} />
+                <Route path="/food-add" element={< FoodAdd />} />
+                <Route path="/animal-new" element={<AnimalsNew />} />
+                {/* <Route path="/" element={ <DashboardAppPage />} />
                 <Route path="/dashboard" element={ <DashboardAppPage />}
                 <Route path="/students" element={ <Students />} />
                 <Route path="/drivers" element={ <Conductores />} />
                 <Route path="/add-students" element={ <AddStudents />} />
-                <Route path="/account" element={ <UserAccount />} /> */}   
-                
-              
+                <Route path="/account" element={ <UserAccount />} /> */}
+
+
               </Route>
               <Route path="*" element={<Page404 />} />
             </Routes>
