@@ -446,7 +446,7 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
   };
   const obtenerIndicesAleatorios = (length) => {
     const indicesAleatorios = new Set();
-    while (indicesAleatorios.size < 2) {
+    while (indicesAleatorios.size < 1) {
       const indiceAleatorio = Math.floor(Math.random() * length);
       indicesAleatorios.add(indiceAleatorio);
     }
@@ -652,8 +652,8 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
                     <option>mantener</option>
 
                   </TextField>
-                  <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={miFuncion}>
-                    Agregar
+                  <Button variant="contained" startIcon={<Iconify icon="fluent-mdl2:generate" />} onClick={miFuncion}>
+                    Generar dieta
                   </Button>
                 </Stack>
                 <TableContainer component={Paper}>
@@ -662,7 +662,7 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
                       <TableRow>
                         <TableCell>Dia de la Semana</TableCell>
                         <TableCell align="left">Primer alimento</TableCell>
-                        <TableCell align="left">Segundo alimento</TableCell>
+
 
                       </TableRow>
                     </TableHead>
@@ -670,8 +670,8 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
                       {console.log("aqui", dietaFormateada)}
                       {!dietaFormateada ? (
                         <TableRow>
-                          <TableCell component="th" >
-                            <img class="MuiBox-root css-1ckry8b" alt="empty content" src="https://minimals.cc/assets/icons/empty/ic_content.svg" />
+                          <TableCell component="th" align="center">
+                            <img class="MuiBox-root css-1ckry8b" alt="empty content" style={{ width: "80%" }} src="https://minimals.cc/assets/icons/empty/ic_content.svg" />
                             <span class="MuiTypography-root MuiTypography-h6 css-149g82e">No Data</span>
                           </TableCell>
 

@@ -10,7 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css';*/
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Modal, Upload, message } from 'antd';
 import { Form, FormikProvider, useFormik } from "formik";
-import { useCallback, useState, useEffect,forwardRef } from 'react';
+import { useCallback, useState, useEffect, forwardRef } from 'react';
 import { fData } from "../../../utils/formatNumber";
 
 // @mui
@@ -32,13 +32,13 @@ import {
   FormControl,
   Select,
   Snackbar,
-  Alert 
+  Alert
 } from '@mui/material';
 
 
 
 
-import { collection, addDoc, doc,Timestamp, GeoPoint, query, onSnapshot } from 'firebase/firestore';
+import { collection, addDoc, doc, Timestamp, GeoPoint, query, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { UploadAvatar } from "./upload";
 // ----------------------------------------------------------------------
@@ -52,7 +52,7 @@ export default function NuevoAnimal() {
   const [openAlert, setOpenAlert] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
- 
+
 
   const [bus, setBus] = useState([]);
 
@@ -95,7 +95,7 @@ export default function NuevoAnimal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
- 
+
     // Obtener una referencia al documento del usuario
 
 
@@ -116,29 +116,29 @@ export default function NuevoAnimal() {
       avatarUrl: nuevoImg,
       danger_level: nuevoPeligro,
       created: Timestamp.now(),
-      
+
     };
 
     console.log(newDoc);
-    
-      await addDoc(collection(db, 'estudiantes'), newDoc).then(() => {
-       /* <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
-        <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
-        Documento se agregó correctamente!
-        </Alert>
-      </Snackbar> */
-        
-     })
+
+    await addDoc(collection(db, 'animals'), newDoc).then(() => {
+      /* <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
+       <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+       Documento se agregó correctamente!
+       </Alert>
+     </Snackbar> */
+
+    })
       .catch((error) => {
         console.error('Error al agregar la publicación: ', error);
       });
- 
-    
-    
-    
 
-    
-   
+
+
+
+
+
+
   };
 
 
@@ -159,7 +159,7 @@ export default function NuevoAnimal() {
   FUNCION DE SUBIR IMAGENES
  =========================================== */
   const [loading, setLoading] = useState(false);
- 
+
   return (
     <>
       <Helmet>
@@ -177,7 +177,7 @@ export default function NuevoAnimal() {
           <Grid container spacing={3}>
             <Grid xs={12} md={12}>
               <Card>
-             
+
                 <form autoComplete="off" noValidate onSubmit={handleSubmit}>
                   <Card>
                     <CardHeader subheader="Agrega la informacion del nuevo animal" title="Detalle de entrada" />
@@ -185,7 +185,7 @@ export default function NuevoAnimal() {
                       <Box sx={{ m: 1.5 }}>
                         <Grid container spacing={3}>
 
-    
+
                           <Grid xs={12} md={6}>
                             <TextField
                               fullWidth
@@ -297,30 +297,30 @@ export default function NuevoAnimal() {
                             />
                           </Grid>
                           <Grid xs={12} md={6}>
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker 
-            selected={selectedDate}
-            onChange={handleDateChange}
-            dateFormat="dd/MM/yyyy"
-            isClearable
-            
-            
-          />
-          </LocalizationProvider>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                                dateFormat="dd/MM/yyyy"
+                                isClearable
+
+
+                              />
+                            </LocalizationProvider>
                           </Grid>
-                         
+
                         </Grid>
                       </Box>
                     </CardContent>
                     <Divider />
                     <CardActions sx={{ justifyContent: 'flex-end', p: 3 }}>
                       <Button variant="contained" type="submit">
-                        Registrar entrada   
+                        Registrar entrada
                       </Button>
                     </CardActions>
                   </Card>
                 </form>
-               
+
               </Card>
             </Grid>
           </Grid>
