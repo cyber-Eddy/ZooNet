@@ -1,5 +1,4 @@
-/* import "mapbox-gl/dist/mapbox-gl.css";
-import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css"; */
+
 import * as Yup from "yup";
 import PropTypes from "prop-types";
 import { useCallback, useState, useEffect, useRef } from "react";
@@ -34,7 +33,7 @@ import fakeRequest from "../../../utils/fakeRequest";
 //
 import Label from "./Label";
 import { UploadAvatar } from "./upload";
-import GoogleMapComponent from "./map-draggable-markers";
+
 
 // ----------------------------------------------------------------------
 

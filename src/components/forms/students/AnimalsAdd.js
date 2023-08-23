@@ -6,13 +6,15 @@ import { useSnackbar } from 'notistack';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { collection, doc, deleteDoc,where, onSnapshot, getDoc, getDocs, query } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { collection, doc, deleteDoc,where, onSnapshot, updateDoc, getDoc, getDocs, query } from 'firebase/firestore';
+import { db, storage } from '../../../firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import LoadingButton from '@mui/lab/LoadingButton';
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import { format,getUnixTime, fromUnixTime } from 'date-fns';
 
 import {
@@ -82,8 +84,9 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
          
 
          const fechaUnix = fromUnixTime(formattedDate);
-         const fechaFormateada1 = format(fechaUnix, 'MM/dd/yyyy');
-         console.log("formateada2",fechaFormateada1);
+         const fechaFormateada1 = format(fechaUnix, 'MM-dd-yyyy');
+         
+        
          setSelectedDate1(fechaFormateada1);
        } else {
          console.log('No existe el documento');
@@ -134,6 +137,7 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      
       name: arrayAnimals?.anim_name || '',
       especie: arrayAnimals?.anim_species || '',
       apodo: arrayAnimals?.anim_nickname || '',
@@ -142,7 +146,7 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
       area: arrayAnimals?.anim_area || '',
       genero: arrayAnimals?.anim_gender || '',
       altura: arrayAnimals?.anim_height || '',
-      avatarUrl: arrayAnimals?.avatarUrl || null,
+      anim_img: arrayAnimals?.anim_img || '',
       condicion: arrayAnimals?.anim_health_condition || '',
       nivelpeligro: arrayAnimals?.danger_level,
       peso: arrayAnimals?.anim_weight || '',
@@ -156,6 +160,37 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
         // resetForm();
         setSubmitting(false);
         console.log('guardado', values);
+        const newDoc = {
+          anim_name: values.name,
+          anim_nickname: values.apodo,
+          anim_species: values.especie,
+          anim_gender: values.genero,
+          anim_age: values.edad,
+          anim_area: values.area,
+          //anim_arrive_date: values.,
+          //anim_born: nuevoNacimiento,
+          anim_diet: values.dieta,
+          anim_health_condition: values.condicion,
+          anim_height: values.altura,
+          anim_weight: values.peso,
+          anim_img: values.anim_img,
+          danger_level: parseInt(values.danger_level),
+         
+          
+        };
+        const docRef = doc(db, 'animals', animals_id);
+        await updateDoc(docRef, newDoc).then(() => {
+          /* <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
+           <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+           Documento se agregó correctamente!
+           </Alert>
+         </Snackbar> */
+           
+        })
+         .catch((error) => {
+           console.error('Error al agregar la publicación: ', error);
+         });
+    
         handleClick(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
         // navigate(PATH_DASHBOARD.user.list);
       } catch (error) {
@@ -171,12 +206,15 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
   FUNCION PARA AGREGAR FOTOS
  =========================================== */
   const handleDrop = useCallback(
-    (acceptedFiles) => {
+    async (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file),
+        const fileRef = ref(storage, file.name);
+        await uploadBytesResumable(fileRef, file);
+        const url = await getDownloadURL(fileRef);
+        console.log(url);
+        setFieldValue("anim_img", {
+          url,
         });
       }
     },
@@ -210,7 +248,7 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
               <Box sx={{ mb: 5 }}>
                 <UploadAvatar
                   accept="image/*"
-                  file={values.avatarUrl}
+                  file={values.anim_img.url}
                   maxSize={3145728}
                   onDrop={handleDrop}
                   error={Boolean(touched.avatarUrl && errors.avatarUrl)}
@@ -319,11 +357,13 @@ export default function AnimalsAdd({ isEdit, arrayAnimals1 }) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker 
                 label="Nacimiento"
-               Value={dayjs(selectedDate1)}
+              
                       selected={selectedDate}
                       onChange={handleDateChange}
                       dateFormat="dd/MM/yyyy"
-                      isClearable
+                      value={dayjs(selectedDate1)}
+                      defaultValue={dayjs('2022-04-17')}
+                      
                       
                       
                     />

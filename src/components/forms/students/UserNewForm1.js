@@ -35,7 +35,7 @@ import fakeRequest from "../../../utils/fakeRequest";
 //
 import Label from "./Label";
 import { UploadAvatar } from "./upload";
-import GoogleMapComponent from "./map-draggable-markers";
+
 
 // ----------------------------------------------------------------------
 
