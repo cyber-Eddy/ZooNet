@@ -161,7 +161,7 @@ getDocs(q)
         
       );
     },
-  
+ 
     },
     { field: 'Ruta', headerName: 'Genero', width: 200, 
       

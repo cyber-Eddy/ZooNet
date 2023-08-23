@@ -36,20 +36,20 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummary title="Estudiantes" total={4} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Animales" total={4} icon={'streamline:travel-hotel-pet-paw-paw-foot-animals-pets-footprint-track'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummary title="Suscripciones" total={8} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Alimentos" total={8} color="info" icon={'streamline:food-drum-stick-1-cook-animal-drumsticks-products-chicken-cooking-nutrition-food'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummary title="Conductores" total={2} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary title="Empleados" total={2} color="warning" icon={'clarity:employee-group-solid'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={12}>
             <AppWebsiteVisits
-              title="Facturacion"
+              title="Entrada de animales"
              
               chartLabels={[
                 '01/01/2003',
@@ -69,7 +69,7 @@ export default function DashboardAppPage() {
                   name: '',
                   type: 'column',
                   fill: 'solid',
-                  data: [15000, 14000, 25000, 13000, 13500, 5500, 8500, 10000, 12500, 17500, 13500],
+                  data: [0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0],
                 },
                 
               ]}

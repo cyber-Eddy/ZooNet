@@ -9,6 +9,7 @@ import account from '../../../_mock/account';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // components
+import { Icon } from '@iconify/react';
 import Logo from '../../../components/logo';
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
@@ -36,17 +37,17 @@ const navConfig = [
   {
     title: 'Alimentos',
     path: '/students',
-    icon: icon('ic_user'),
+    icon: <Icon icon="streamline:food-drum-stick-1-cook-animal-drumsticks-products-chicken-cooking-nutrition-food" />,
   },
   {
     title: 'Animales',
     path: '/animals',
-    icon: icon('ic_user'),
+    icon: <Icon icon="streamline:travel-hotel-pet-paw-paw-foot-animals-pets-footprint-track" />,
   },
   {
-    title: 'Suscripcion',
+    title: 'empleados',
     path: '/subscription',
-    icon: icon('ic_file'),
+    icon: <Icon icon="clarity:employee-group-line" />
   },
 
 

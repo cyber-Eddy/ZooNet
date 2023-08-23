@@ -96,11 +96,9 @@ export default function Students() {
     renderCell: (params) => {
       return (
         <Stack direction="row" alignItems="center" spacing={2}>
-        <Avatar alt={params.row.stud_name} src={params.row.stud_img.url} />
+        <Avatar alt={params.row.food_name} />
         <Typography variant="subtitle2" noWrap>
-        {params.row.stud_name} {params.row.stud_last}
-        <br />
-        {params.row.stud_email}
+        {params.row.food_name}
       </Typography>
       </Stack>
         
@@ -108,20 +106,18 @@ export default function Students() {
     },
   
     },
-    { field: 'Ruta', headerName: 'Ruta', width: 350, 
+    { field: 'componentes', headerName: 'Componentes', width: 350, 
       
     renderCell: (params) => {           
       return (
         <Typography variant="subtitle2" noWrap>
-        { params.row.stud_direction}
+        { params.row.components}
       </Typography>
       );
     },
   
     },
-    { field: 'stud_inst', headerName: 'Institucion', width: 180 },
-    
-    { field: 'stud_phone', headerName: 'Telefono',  width: 150 },
+    { field: 'porcion_g', headerName: 'Porcion en g', width: 180 },
    
   ];
 
@@ -194,7 +190,7 @@ export default function Students() {
         aria-describedby="modal-modal-description">
         <Box sx={style}>
          
-           afsad
+          
         </Box>
       </Modal>
       {/* =========================================
@@ -202,11 +198,13 @@ export default function Students() {
          =========================================== */}
 
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Estudiantes
+          Alimentos
           </Typography>
-         
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} href='./food-add'>
+            Agregar
+          </Button>
         </Stack>
         <Card>
           <div style={{ height: 380, width: '100%' }}>
